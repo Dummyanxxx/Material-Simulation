@@ -1,14 +1,14 @@
 #!/bin/bash
-#SBATCH --job-name=ecut 	                     # Job name (sesuaikan sesuai kebutuhan)
-#SBATCH --partition=short                    # Pilih partisi: short | medium-small | medium-large | long | very-long
-#SBATCH --ntasks=64                            # Jumlah total proses MPI
-#SBATCH --nodes=1                             # Maksimum jumlah node yang digunakan
-#SBATCH --ntasks-per-node=64                   # Jumlah proses per node
-#SBATCH --mem=64G                             # Memori per node
-#SBATCH --time=01-00:00                        # Waktu maksimum eksekusi (hh:mm:ss)
-#SBATCH --output=ecut.log                # Log output dan error (berdasarkan Job ID)
+#SBATCH --job-name=ecut 	                   # Job name
+#SBATCH --partition=short                    # Partition: short | medium-small | medium-large | long | very-long
+#SBATCH --ntasks=64                          # Total number of MPI processes
+#SBATCH --nodes=1                            # The maximum number of nodes used
+#SBATCH --ntasks-per-node=64                 # Number of processes per node
+#SBATCH --mem=64G                            # Memory per node
+#SBATCH --time=01-00:00                      # Maximum execution time (hh:mm:ss)
+#SBATCH --output=ecut.log                    # Log output and error (based on Job ID)
 
-# Informasi dasar tentang job
+# Basic information about the job
 echo "Date              = $(date)"
 echo "Hostname          = $(hostname -s)"
 echo "Working Directory = $(pwd)"
@@ -21,11 +21,11 @@ echo "Number of Cores/Task Allocated = $SLURM_CPUS_PER_TASK"
 module load openmpi4/4.1.4
 module load materials/qe/7.2-openmpi 
 
-# Convergence test of cut-off energy.
-# Set a variable ecut from 20 to 80 Ry.
+# Energy cut-off convergence test.
+# Set variable ecut dari 20 to 80 Ry.
 for ecut in 20 22 24 26 28 30 35 \
 40 45 50 60 70 80 ; do
-# Make input file for the SCF calculation.
+# Create an input file for the SCF calculation.
 # ecutwfc is assigned by variable ecut.
 cat > ecut.$ecut.in << EOF
 &CONTROL
